@@ -1,0 +1,42 @@
+```{r}
+library(rio)
+hijo= import('https://github.com/CarlosCGuija/Estad-stica-2-Magallanes/raw/master/hijo.xlsx')
+matrimonio= import('https://github.com/CarlosCGuija/Estad-stica-2-Magallanes/raw/master/matrimonio.xlsx')
+mutilación= import('https://github.com/CarlosCGuija/Estad-stica-2-Magallanes/raw/master/mutilaci%C3%B3n.xlsx')
+```
+```{r}
+newhijo=c('Country','1','2','Preferencia_de_hijo')
+names(hijo)=newhijo
+newmatr=c('Country','1','2','Matrimonio_temprano')
+names(matrimonio)=newmatr
+newmut=c('Country','1','2','Mutilaciones')
+names(mutilación)=newmut
+```
+```{r}
+hijo[,c(2,3)]=NULL
+mutilación[,c(2,3)]=NULL
+matrimonio[,c(2,3)]=NULL
+```
+```{r}
+hijo=na.omit(hijo)
+mutilación=na.omit(mutilación)
+matrimonio=na.omit(matrimonio)
+```
+```{r}
+hijo=hijo[-c(1),]
+matrimonio=matrimonio[-c(1),]
+mutilación=mutilación[-c(1),]
+```
+```{r}
+matrihijo=merge(matrimonio,hijo,all.x=T, all.y=T)
+desarrollo_mujer=merge(matrihijo,mutilación,all.x=T, all.y=T)
+```
+```{r}
+desarrollo_mujer=na.omit(desarrollo_mujer)
+row.names(desarrollo_mujer)=NULL
+```
+```{r}
+desarrollo_mujer[,c(2:4)]=lapply(desarrollo_mujer[,c(2:4)],as.numeric)
+desarrollo_mujer$Matrimonio_temprano=round(desarrollo_mujer$Matrimonio_temprano, 2)
+```
+
